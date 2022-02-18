@@ -1,18 +1,15 @@
 from __future__ import print_function
 
 import os.path
+import os
 import pickle
 import sys
 
-from pathlib import Path
-
-import json
-
 from apiclient import errors
-
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
+
 
 
 class make_query():
