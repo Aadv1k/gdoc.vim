@@ -26,4 +26,4 @@ The `g:token_directory` is where token for your api should live, if you don't wa
 to pop-up everytime, you should set a standard directory to place the token.
 
 ## Screenshots
-![1.png](./screenshots/1.png)
+<img src="./screenshots/1.png" alt="1.png" width="500px">
