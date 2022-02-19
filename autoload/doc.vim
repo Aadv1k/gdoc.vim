@@ -1,23 +1,3 @@
-
-function doc#InstallDeps()
-
-python3 << EOF
-from os import path
-import vim
-import subprocess
-
-req='./requirements.txt'
-
-if path.exists(path.normpath(path.join(os.getcwd(), '..', req))):
-    vim.command("let g:build_status = 1")
-    subprocess.call(['python3', '-m', 'pip', 'install', '-r', path.normpath(path.join(os.getcwd(), '..', req))])
-else:
-    vim.command("let g:build_status = -1")
-EOF
-
-endfunction
-
-
 function doc#Gdoc(path_to_creds, token_directory)
 let s:plugin_root_dir = fnamemodify(resolve(expand('<sfile>:p')), ':h')
 
@@ -33,12 +13,14 @@ python_root_dir = os.path.normpath(os.path.join(plugin_root_dir, '..', 'python')
 sys.path.insert(0, python_root_dir)
 
 t = gdoc.make_query(vim.eval('a:path_to_creds'), vim.eval('a:token_directory'))
+
 EOF
 
 endfunction
 
 
 function doc#WriteDoc(name)
+    echo "I am running"
 python3 << EOF
 
 from os import path

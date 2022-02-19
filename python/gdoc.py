@@ -11,7 +11,6 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
 
-
 class make_query():
     def __init__(self, credentials_file_path: str = None, token_directory: str = './'):
         self.SCOPES = [
