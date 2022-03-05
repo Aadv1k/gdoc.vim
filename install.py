@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
 
 import sys
-import os
+from os import path
+import subprocess
 
 version = sys.version_info[ 0 : 3 ]
 if version < ( 3, 6, 0 ):
   sys.exit('[ERROR] Gdoc requires Python >= 3.6.0 to run') 
 
-if not os.path.exists('./requirements.txt'):
-  sys.exit("[ERROR] Couldn't find a requirements.txt file, running git pull \
-          might resolve the issue") 
+req_path = path.normpath(path.join(path.realpath(__file__), '../', 'requirements.txt'))
 
-os.system('pip install -r requirements.txt')
+if not path.exists(req_path):
+  sys.exit("[ERROR] Couldn't find a requirements.txt file, running git pull might resolve the issue") 
+else: 
+   sub = subprocess.run(f'pip install -r {req_path}'.split())
+   exit(1)
+
