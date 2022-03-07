@@ -26,8 +26,8 @@ let g:buf_content = join(getline(1,'$'), "\n")
 let disabled = get(g:, 'disable_startup', "-1")
 
 if disabled == -1
-    call doc#Gdoc(plug_path, path_to_creds, token_directory)
-    command! -nargs=1 -complete=command Gdoc call doc#WriteDoc(plug_path, <f-args>)
+    call gdoc#Gdoc(plug_path, path_to_creds, token_directory)
+    command! -nargs=1 -complete=command Gdoc call gdoc#WriteDoc(plug_path, <f-args>)
 else
-    command! -nargs=1 -complete=command Gdoc call doc#InitAndWrite(plug_path, path_to_creds, token_directory, <f-args>)
+    command! -nargs=1 -complete=command Gdoc call gdoc#InitAndWrite(plug_path, path_to_creds, token_directory, <f-args>)
 endif
