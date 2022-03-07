@@ -61,4 +61,4 @@ doing this, will remove the delay, instead it will add it to `:Gdoc`.
 
 ## Screenshots
 
-<img src="./screenshots/1.png" alt="1.png" width="500px">
+<img src="./screenshots/1.1.png" alt="1.png" width="500px">
