@@ -9,8 +9,6 @@ This is a WIP and a bare bones implementation currently you can :-
 
 ## Installation
 
-### Requirements
-
 **Make sure you have the following**
 
 - python >= 3.6 (including pip)
@@ -19,11 +17,15 @@ This is a WIP and a bare bones implementation currently you can :-
 
 Depending on your plugin manager, you need to run 'install.py' which is the install script. if any of these commands don't work try putting sudo.
 
-**for vim-plug**
-
-```sh
-~/.vim/plugged/gdoc.vim/install.py
-```
+### vim-plug
+*Unix*
+- ```sh 
+  ~/.vim/plugged/gdoc.vim/install.py
+  ```
+*Windows (powershell)*
+- ```sh
+  ~/AppData/Local/nvim-data/gdoc.vim/install.py
+  ```
 
 ### Initializing the app
 
