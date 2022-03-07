@@ -1,11 +1,9 @@
 # Gdoc.vim
-
 Google docs integration for vim/neovim.
 
 ## Features
-
 This is a WIP and a bare bones implementation currently you can :-
-- Create documents with your buffer contents.
+- Create and write documents with your buffer content.
 
 ## Installation
 
@@ -15,17 +13,10 @@ This is a WIP and a bare bones implementation currently you can :-
 - vim 8+ with +python or +python3
 - **for neovim users** pynvim `pip install pynvim`
 
-Depending on your plugin manager, you need to run 'install.py' which is the install script. if any of these commands don't work try putting sudo.
-
 ### vim-plug
-*Unix*
-- ```sh 
-  ~/.vim/plugged/gdoc.vim/install.py
-  ```
-*Windows (powershell)*
-- ```sh
-  ~/AppData/Local/nvim-data/gdoc.vim/install.py
-  ```
+```vim
+Plug 'aadv1k/gdoc.vim', {'do': './install.py'}
+```
 
 ### Initializing the app
 
