@@ -21,8 +21,8 @@ Depending on your plugin manager, you need to run 'install.py' which is the inst
 
 **for vim-plug**
 
-```shell
-$ ~/.vim/plugged/gdoc.vim/install.py
+```sh
+~/.vim/plugged/gdoc.vim/install.py
 ```
 
 ### Initializing the app
