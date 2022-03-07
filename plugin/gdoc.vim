@@ -16,6 +16,7 @@ if token_directory == -1
     let token_directory = './'
 endif
 
+let plug_path = fnamemodify(resolve(expand('<sfile>:p')), ':h')
 
 " We assume the user has executed `./install.py` and thus has all the packages
 let g:buf_content = join(getline(1,'$'), "\n")
@@ -25,8 +26,8 @@ let g:buf_content = join(getline(1,'$'), "\n")
 let disabled = get(g:, 'disable_startup', "-1")
 
 if disabled == -1
-    call doc#Gdoc(path_to_creds, token_directory)
-    command! -nargs=1 -complete=command Gdoc call doc#WriteDoc(<q-args>)
+    call doc#Gdoc(plug_path, path_to_creds, token_directory)
+    command! -nargs=1 -complete=command Gdoc call doc#WriteDoc(plug_path, <f-args>)
 else
-    command! -nargs=1 -complete=command Gdoc call doc#InitAndWrite(path_to_creds, token_directory, <f-args>)
+    command! -nargs=1 -complete=command Gdoc call doc#InitAndWrite(plug_path, path_to_creds, token_directory, <f-args>)
 endif
