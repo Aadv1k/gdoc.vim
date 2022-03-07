@@ -14,5 +14,5 @@ if not path.exists(req_path):
   sys.exit("[ERROR] Couldn't find a requirements.txt file, running git pull might resolve the issue") 
 else: 
    sub = subprocess.run(f'pip install -r {req_path}'.split())
-   exit(1)
+   exit(0)
 

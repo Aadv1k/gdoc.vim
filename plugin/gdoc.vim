@@ -21,11 +21,6 @@ let plug_path = fnamemodify(resolve(expand('<sfile>:p')), ':h')
 " We assume the user has executed `./install.py` and thus has all the packages
 let g:buf_content = join(getline(1,'$'), "\n")
 
-function! GdocInstall()
-    execute '!' . plug_path . '/..' . '/install.py'
-endfunction
-command! GdocInstall call GdocInstall()
-
 " We can choose to disable startup load, which will lead to normal startup
 " but a longer writing time.
 let disabled = get(g:, 'disable_startup', "-1")
