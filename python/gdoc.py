@@ -59,10 +59,13 @@ class doc_query(google_api):
 
     def open_doc_from_file(self, fname: str = '', idx: str = ''):
         with open(self.gdoc_file) as file:
-            ids = [line.split('->') for line in file.read().split('\n')]
+            ids = [line.split('->') for line in file.read().split('\n') if all(line.split('->'))]
+        
+
         for id in ids:
-            if id[0].strip() == fname or id[1].strip() == idx:
-                return (self.parse_doc(self.read_doc(id[1].strip())), id[1].strip(), id[0].strip())
+            doc_name, doc_id = id[0].strip(), id[1].strip()
+            if doc_name == fname or doc_id == idx:
+                return (self.parse_doc(self.read_doc(doc_name)), doc_id, doc_name)
             else:
                 continue
         return -1
