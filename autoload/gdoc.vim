@@ -35,17 +35,16 @@ python3 << EOF
 target_file_name = vim.eval("expand('%:t')")
 target_file_path = vim.eval("expand('%:p')")
 
-
 if os.path.exists('./.gdoc') and query.open_doc_from_file(fname = target_file_name, idx = '') != -1:
-    _,id,_ = query.open_doc_from_file(fname = target_file_name, idx = '')
+    id = query.open_doc_from_file(fname = target_file_name, idx = '')[1]
 
-    print('[INFO] Syncing document')
+    print('[INFO] Syncing document...')
 
     with open(target_file_path) as file:
         new_content = file.read()
 
     if query.sync_doc(new_content, id) != -1:
-        print('[INFO] Successfully synced the document')
+        print('[INFO] Successfully synced the document.')
 
     else:
         print('[ERROR] Something went wrong')

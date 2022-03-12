@@ -37,7 +37,7 @@ class doc_query(google_api):
                 'deleteContentRange': {
                     'range': {
                         'startIndex': 1,
-                        'endIndex': doc_length-1,
+                        'endIndex': doc_length - 1,
                     }
                 }
             },
@@ -56,16 +56,15 @@ class doc_query(google_api):
 
         return result
 
-
     def open_doc_from_file(self, fname: str = '', idx: str = ''):
         with open(self.gdoc_file) as file:
-            ids = [line.split('->') for line in file.read().split('\n') if all(line.split('->'))]
-        
+            ids = [line.split(
+                '->') for line in file.read().split('\n') if all(line.split('->'))]
 
         for id in ids:
             doc_name, doc_id = id[0].strip(), id[1].strip()
             if doc_name == fname or doc_id == idx:
-                return (self.parse_doc(self.read_doc(doc_name)), doc_id, doc_name)
+                return (self.parse_doc(self.read_doc(doc_id)), doc_id, doc_name)
             else:
                 continue
         return -1
