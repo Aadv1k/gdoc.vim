@@ -43,12 +43,12 @@ to pop-up everytime, you should set a standard directory to place the token.
 
 ## Usage
 
-`:Gdoc write`
+### ```:Gdoc write```
 This essentially creates a new google document with the current file name, and
 appends some extra info to `.gdoc` in the local directory which will later be
 used by other functions.
 
-`:Gdoc sync`
+### ```:Gdoc sync```
 This takes your file contents, and based on the id in `.gdoc` it updates the
 google document with the local file content. if it doesn't find the id, it will
 ask you to run `:Gdoc write` to sync it.
