@@ -11,7 +11,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
 class google_api():
-    def __init__(self, credentials_file_path: str = None, token_directory: str = './'):
+    def __init__(self, credentials_file_path, token_directory: str = './'):
         self.SCOPES = [
             'https://www.googleapis.com/auth/documents',
             'https://www.googleapis.com/auth/drive'
@@ -22,7 +22,7 @@ class google_api():
         self.token_directory = os.path.normpath(token_directory)
 
         if not credentials_file_path:
-            print('Please provide a credentials file.')
+            print('Please provide a credentials file.', credentials_file_path)
             sys.exit()
         self.credential_file = os.path.normpath(credentials_file_path)
 
