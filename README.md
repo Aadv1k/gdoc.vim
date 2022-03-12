@@ -43,17 +43,15 @@ to pop-up everytime, you should set a standard directory to place the token.
 
 ## Usage
 
-`:Gdoc filename can be as long as you like`
+`:Gdoc write`
+This essentially creates a new google document with the current file name, and
+appends some extra info to `.gdoc` in the local directory which will later be
+used by other functions.
 
-By default, a new instance of the app is initialized every time on start up, this leads to a slight
-time delay, but a faster document creation time. You can disable this by setting `g:disable_startup`
-to `1`
-
-```vim
-let g:disable_startup = 1
-```
-
-doing this, will remove the delay, instead it will add it to `:Gdoc`.
+`:Gdoc sync`
+This takes your file contents, and based on the id in `.gdoc` it updates the
+google document with the local file content. if it doesn't find the id, it will
+ask you to run `:Gdoc write` to sync it.
 
 ## Screenshots
 
