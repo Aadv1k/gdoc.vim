@@ -3,7 +3,10 @@ Google docs integration for vim/neovim.
 
 ## Features
 This is a WIP and a bare bones implementation currently you can :-
-- Create and write documents with your buffer content.
+
+- Create google documents from vim
+- Sync the documents with changes 
+- See [TODO.md](./TODO.md) for more details.
 
 ## Installation
 
