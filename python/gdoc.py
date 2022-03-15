@@ -31,6 +31,9 @@ class doc_query(google_api):
 
     def sync_doc(self, new_doc: str, old_doc_id: str):
         _, doc_length = self.parse_doc(self.read_doc(old_doc_id))
+        # A hacky solution to "sync" documents
+        # Delete everything in the documents and write contents from the new doc
+
 
         blob = [
             {
