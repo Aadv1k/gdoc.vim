@@ -12,10 +12,9 @@
   - Writes the document to google docs with your current file name (with extension)
   - Creates or appends to a local "db" file to contain all the doc ids
 - [x] `:Gdoc sync`
-
   - Update the document with your local changes
 
-- [ ] `:Gdoc rm`
+- [x] `:Gdoc rm`
 
   - Remove the document associated with your current file
   - Delete it from `.gdoc`

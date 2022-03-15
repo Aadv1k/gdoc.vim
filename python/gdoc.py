@@ -12,6 +12,21 @@ class doc_query(google_api):
         f = open(self.gdoc_file, 'a')
         f.write(f"{file_name} -> {idx}\n")
         f.close()
+    
+    def delete_line_from_file(self, line_num):
+        lines = []
+        with open(self.gdoc_file, 'r') as fp:
+            lines = fp.readlines()
+
+        with open(self.gdoc_file, 'w') as fp:
+            # iterate each line
+            for number, line in enumerate(lines):
+                # delete line 5 and 8. or pass any Nth line you want to remove
+                # note list index starts from 0
+                if number != line_num:
+                    fp.write(line)
+        return lines
+
 
     def parse_doc(self, document: dict):
         content_str = []
@@ -33,8 +48,6 @@ class doc_query(google_api):
         _, doc_length = self.parse_doc(self.read_doc(old_doc_id))
         # A hacky solution to "sync" documents
         # Delete everything in the documents and write contents from the new doc
-
-
         blob = [
             {
                 'deleteContentRange': {
@@ -61,13 +74,12 @@ class doc_query(google_api):
 
     def open_doc_from_file(self, fname: str = '', idx: str = ''):
         with open(self.gdoc_file) as file:
-            ids = [line.split(
-                '->') for line in file.read().split('\n') if all(line.split('->'))]
+            ids = [line.split('->') for line in file.read().split('\n') if all(line.split('->'))]
 
-        for id in ids:
+        for line,id in enumerate(ids):
             doc_name, doc_id = id[0].strip(), id[1].strip()
             if doc_name == fname or doc_id == idx:
-                return (self.parse_doc(self.read_doc(doc_id)), doc_id, doc_name)
+                return (self.parse_doc(self.read_doc(doc_id)), doc_id, doc_name, line)
             else:
                 continue
         return -1
