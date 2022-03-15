@@ -68,6 +68,13 @@ class google_api():
         self.drive_service = build('drive', 'v3', credentials=self.creds)
         self.docs_service = build('docs', 'v1', credentials=self.creds)
 
+    def delete_doc(self, file_id):
+        try:
+            dq = self.drive_service.files().delete(fileId=file_id).execute()
+            return (0, dq)
+        except Exception as e:
+            return (-1, e)
+
     def create_doc(self, blob):
         doc = self.docs_service.documents().create(body=blob).execute()
         return {

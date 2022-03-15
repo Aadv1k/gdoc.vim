@@ -4,6 +4,8 @@ function gdoc#LoadCommand(plug_path, path_to_creds, token_directory, mode)
         call gdoc#WriteDoc()
     elseif a:mode  == 'sync'
         call gdoc#SyncDoc()
+    elseif a:mode  == 'rm'
+        call gdoc#RmDoc()
     else
         echom "Exaustive handling of Arguments; " . a:mode . " Not found"
     endif
@@ -28,6 +30,32 @@ query = doc_query(creds_path, token_path)
 
 EOF
 endfunction
+
+function gdoc#RmDoc()
+python3 << EOF 
+
+target_file_name = vim.eval("expand('%:t')")
+target_file_path = vim.eval("expand('%:p')")
+
+local_doc = query.open_doc_from_file(target_file_name)
+print('[INFO] Deleting the file %s from google docs' % target_file_name)
+if local_doc != -1:
+    file_id = local_doc[1]
+    file_name = local_doc[2]
+    line = local_doc[3]
+
+    dq = query.delete_doc(file_id)
+    if dq[0] == 0:
+        query.delete_line_from_file(line)
+        print('[INFO] Successfully deleted %s' % file_name)
+    else:
+        print('[ERROR] Something went wrong -- %s' % dq[1])
+else:
+    print('[INFO] Document "%s" is not synced with google docs yet, try running :Gdoc write ' % target_file_name)
+
+EOF 
+endfunction
+
 
 function gdoc#SyncDoc()
 python3 << EOF 
