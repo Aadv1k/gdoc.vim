@@ -49,7 +49,8 @@ to pop-up everytime, you should set a standard directory to place the token.
 ## Usage
 
 This plugin creats a local file called `.gdoc` this file is used to sync and
-keep track of the documents in that particular folder.
+keep track of the documents in that particular folder. Deleting or editing
+`.gdoc` file might lead to unexpected behaviour, so it is advised not to.
 
 ### `:Gdoc write`
 
@@ -62,6 +63,10 @@ used by other functions. It does so using the following scheme `{file_name.[exte
 This accesses the document associated with that particular filename using
 `.gdoc`, it then formats a request that first clears the entire document, and
 writes your current file contents.
+
+### `:Gdoc rm`
+
+Delete the document associated with the file from google drive.
 
 ## Screenshots
 
