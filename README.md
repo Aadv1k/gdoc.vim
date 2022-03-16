@@ -40,11 +40,15 @@ In the example below, `credentials.json` is placed in `~/.vim` you can use any v
 
 ```vim
 let g:path_to_creds = '/home/aadv1k/.vim/credentials.json'
-let g:token_directory = '/home/aadv1k/.vim/'
+let g:gdoc_file = '/home/aadv1k/.vim/.gdoc' " optional; default is ./.gdoc
+let g:token_directory = '/home/aadv1k/.vim/' " optional; default is ./
 ```
 
 The `g:token_directory` is where token for your api should live, if you don't want the oAuth screen
 to pop-up everytime, you should set a standard directory to place the token.
+
+`g:gdoc_file` is quite important as it is used to map the files to the
+documents in the cloud, read the [USAGE](#Usage) for more info about `.gdoc` 
 
 ## Usage
 

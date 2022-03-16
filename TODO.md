@@ -19,4 +19,4 @@
   - Remove the document associated with your current file
   - Delete it from `.gdoc`
 
-- [ ] Maybe change the implementation of `.gdoc` to be in a standard directory instead of it being in every folder
+- [x] Change the implementation of `.gdoc` to be in a standard directory instead of it being in every folder
