@@ -1,5 +1,5 @@
-function gdoc#LoadCommand(plug_path, path_to_creds, token_directory, mode)
-    call gdoc#Gdoc(a:plug_path, a:path_to_creds, a:token_directory)
+function gdoc#LoadCommand(plug_path, path_to_creds, token_directory, gdoc_path, mode)
+    call gdoc#Gdoc(a:plug_path, a:path_to_creds, a:token_directory, a:gdoc_path)
     if a:mode  == 'write'
         call gdoc#WriteDoc()
     elseif a:mode  == 'sync'
@@ -11,7 +11,7 @@ function gdoc#LoadCommand(plug_path, path_to_creds, token_directory, mode)
     endif
 endfunction
 
-function gdoc#Gdoc(plug_path, path_to_creds, token_directory)
+function gdoc#Gdoc(plug_path, path_to_creds, token_directory, gdoc_path)
 python3 << EOF
 import vim
 import sys
@@ -25,8 +25,9 @@ from gdoc import doc_query
 
 creds_path = vim.eval('a:path_to_creds')
 token_path = vim.eval('a:token_directory')
+gdoc_path = vim.eval('a:gdoc_path')
 
-query = doc_query(creds_path, token_path)
+query = doc_query(creds_path, token_path, gdoc_path)
 
 EOF
 endfunction
@@ -37,8 +38,8 @@ python3 << EOF
 target_file_name = vim.eval("expand('%:t')")
 target_file_path = vim.eval("expand('%:p')")
 
-local_doc = query.open_doc_from_file(target_file_name)
-print('[INFO] Deleting the file %s from google docs' % target_file_name)
+local_doc = query.open_doc_from_file(target_file_path)
+
 if local_doc != -1:
     file_id = local_doc[1]
     file_name = local_doc[2]
@@ -47,7 +48,7 @@ if local_doc != -1:
     dq = query.delete_doc(file_id)
     if dq[0] == 0:
         query.delete_line_from_file(line)
-        print('[INFO] Successfully deleted %s' % file_name)
+        print('[INFO] Successfully deleted %s from google docs' % target_file_name)
     else:
         print('[ERROR] Something went wrong -- %s' % dq[1])
 else:
@@ -63,10 +64,9 @@ python3 << EOF
 target_file_name = vim.eval("expand('%:t')")
 target_file_path = vim.eval("expand('%:p')")
 
-if os.path.exists('./.gdoc') and query.open_doc_from_file(fname = target_file_name, idx = '') != -1:
-    id = query.open_doc_from_file(fname = target_file_name, idx = '')[1]
-
-    print('[INFO] Syncing document...')
+print('[INFO] Syncing document...')
+if os.path.exists(query.gdoc_file) and query.open_doc_from_file(fname = target_file_path, idx = '') != -1:
+    id = query.open_doc_from_file(fname = target_file_path, idx = '')[1]
 
     with open(target_file_path) as file:
         new_content = file.read()
@@ -90,13 +90,13 @@ import vim
 import sys
 
 def main():
-    target_file = vim.eval("expand('%:p')")
+    target_file_path = vim.eval("expand('%:p')")
     target_file_name = vim.eval("expand('%:t')")
 
-    if not target_file:
+    if not target_file_path:
         return -1
 
-    with open(target_file, 'r') as file:
+    with open(target_file_path, 'r') as file:
         file_contents = file.read()
 
     create_blob = { 'title': target_file_name }
@@ -107,8 +107,8 @@ def main():
     if doc['id'] != None:
         print(f"[SUCCESS] Created a document with the id {doc['id']} and title '{doc['title']}'")
 
-        query.write_id_to_file(doc['id'], doc['title'])
-        print(f"[SUCCESS] Saved the document ID to .gdoc ")
+        query.write_id_to_file(doc['id'], target_file_path)
+        print("[SUCCESS] Saved the document ID to %s" % query.gdoc_file)
         
         if query.edit_doc(doc['id'], edit_blob):
             print(f"[SUCCESS] Successfully written the document with the id {doc['id']} ")
@@ -116,12 +116,13 @@ def main():
         return -2
 
 
+target_file_path = vim.eval("expand('%:p')")
 target_file_name = vim.eval("expand('%:t')")
-if os.path.exists('./.gdoc') and query.open_doc_from_file(fname = target_file_name, idx = '') != -1:
+
+if os.path.exists(query.gdoc_file) and query.open_doc_from_file(fname = target_file_path, idx = '') != -1:
         print('[INFO] Document "%s" already exists in google docs.' % target_file_name)
 else:
     i = main()
-
     if i == -1:
         print('[ERROR] Empty buffer, no text to write.')
     elif i == -2:
