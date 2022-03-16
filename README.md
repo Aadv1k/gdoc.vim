@@ -52,9 +52,9 @@ documents in the cloud, read the [USAGE](#Usage) for more info about `.gdoc`
 
 ## Usage
 
-This plugin creats a local file called `.gdoc` this file is used to sync and
-keep track of the documents in that particular folder. Deleting or editing
-`.gdoc` file might lead to unexpected behaviour, so it is advised not to.
+> This plugin creates a file called `.gdoc` which is placed in a folder you can specify via `g:gdoc_file` by default it is made in every directory you execute `:Gdoc write`.
+>
+> `.gdoc` is used to keep track of the files and the documents(id) they are mapped to. It does so using the following format `{full_file_path} -> {file_id}\n`
 
 ### `:Gdoc write`
 
