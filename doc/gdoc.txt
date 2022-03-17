@@ -12,22 +12,13 @@
 ====================================================================
 CONTENTS                                            *Gdoc*
 
-    1. Setup ................ |GdocSetup|
-    2. Usage ................ |GdocUsage|
+    1. Usage ................ |GdocUsage|
 
 ====================================================================
-Section 1: Setup                                       *GdocSetup*
+Section 1: Usage                                       *GdocUsage*
 
-To setup this app, you need to have a google account to create a new google
-cloud project. you can find instructions to setup the app here
-https://github.com/Aadv1k/gdoc.vim/blob/main/README.md#Installation
+The `:Gdoc` command consists of three main functions.
 
-
-====================================================================
-Section 2: Usage                                       *GdocUsage*
-
-
-The `:Gdoc` command consists of three main function.
 - `:Gdoc write`
 This essentially creates a new google document with the current file name, and
 appends some extra info to `.gdoc` in the local directory which will later be

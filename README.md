@@ -4,10 +4,9 @@ Google docs integration for vim/neovim.
 
 ## Features
 
-This is a WIP and a bare bones implementation currently you can :-
-
 - Create google documents from vim
-- Sync the documents with changes
+- Sync the documents with local changes
+- Delete documents on the drive
 - See [TODO.md](./TODO.md) for more future plans for the project; feel free to raise any issue for a feature or bug.
 
 ## Installation
@@ -39,22 +38,25 @@ the credentials in the `g:path_to_creds`.
 In the example below, `credentials.json` is placed in `~/.vim` you can use any valid credential file, and put it's path here.
 
 ```vim
-let g:path_to_creds = '/home/aadv1k/.vim/credentials.json'
-let g:gdoc_file = '/home/aadv1k/.vim/.gdoc' " optional; default is ./.gdoc
-let g:token_directory = '/home/aadv1k/.vim/' " optional; default is ./
+let g:path_to_creds = '~/.vim/credentials.json' " this is required
+let g:gdoc_file_path = '~/.vim/' " optional; default is ./
+let g:token_directory = '~/.vim/' " optional; default is ./
 ```
 
-The `g:token_directory` is where token for your api should live, if you don't want the oAuth screen
-to pop-up everytime, you should set a standard directory to place the token.
+These paths will be valid both on windows and unix as they are passed through [`os.path.expanduser()`](https://docs.python.org/3/library/os.path.html#os.path.expanduser) in python.
 
-`g:gdoc_file` is quite important as it is used to map the files to the
-documents in the cloud, read the [USAGE](#Usage) for more info about `.gdoc` 
+`g:token_directory` is where token for your api should live, if you don't
+want the oAuth screen to pop-up everytime, you should set a standard directory
+to place the token.
+
+`g:gdoc_file_path` is the directory where the `.gdoc` file is placed, this file
+is used to map local files to their corresponding document in the drive
 
 ## Usage
 
-> This plugin creates a file called `.gdoc` which is placed in a folder you can specify via `g:gdoc_file` by default it is made in every directory you execute `:Gdoc write`.
+> This plugin creates a file called `.gdoc` which is placed in a folder you can specify via `g:gdoc_file_path` by default it is made in every directory you execute `:Gdoc write`.
 >
-> `.gdoc` is used to keep track of the files and the documents(id) they are mapped to. It does so using the following format `{full_file_path} -> {file_id}\n`
+> `.gdoc` is used to keep track of the local files and their documents(ids). It does so using the following format `{full_file_path} -> {file_id}\n`
 
 ### `:Gdoc write`
 
@@ -66,7 +68,7 @@ used by other functions. It does so using the following scheme `{file_name.[exte
 
 This accesses the document associated with that particular filename using
 `.gdoc`, it then formats a request that first clears the entire document, and
-writes your current file contents.
+writes your current file contents in it.
 
 ### `:Gdoc rm`
 
