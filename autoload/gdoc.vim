@@ -1,15 +1,18 @@
-function gdoc#LoadCommand(plug_path, path_to_creds, token_directory, gdoc_path, mode)
+function gdoc#LoadCommand(plug_path, path_to_creds, token_directory, gdoc_path, opts)
     call gdoc#Gdoc(a:plug_path, a:path_to_creds, a:token_directory, a:gdoc_path)
-    if a:mode  == 'write'
+    let args = split(a:opts, ' ')
+    let mode = args[0]
+    if mode  == 'write'
         call gdoc#WriteDoc()
-    elseif a:mode  == 'sync'
+    elseif mode  == 'sync'
         call gdoc#SyncDoc()
-    elseif a:mode  == 'rm'
+    elseif mode  == 'rm'
         call gdoc#RmDoc()
     else
-        echom "Exaustive handling of Arguments; " . a:mode . " Not found"
+        echom "Exaustive handling of Arguments; " . mode . " Not found"
     endif
 endfunction
+
 
 function gdoc#Gdoc(plug_path, path_to_creds, token_directory, gdoc_path)
 python3 << EOF
@@ -32,6 +35,18 @@ query = doc_query(creds_path, token_path, gdoc_path)
 EOF
 endfunction
 
+function gdoc#Msg(msg, mode)
+    if a:mode == 'warn'
+        echohl WarningMsg
+    elseif a:mode == 'error'
+        echohl ErrorMsg
+    endif
+
+    echom a:msg
+
+    echohl None
+endfunction
+
 function gdoc#RmDoc()
 python3 << EOF 
 
@@ -48,12 +63,11 @@ if local_doc != -1:
     dq = query.delete_doc(file_id)
     if dq[0] == 0:
         query.delete_line_from_file(line)
-        print('[INFO] Successfully deleted %s from google docs' % target_file_name)
+        vim.command("call gdoc#Msg('[gdoc.vim] Successfully deleted \"%s\" from google docs', 'warn')" % target_file_name)
     else:
-        print('[ERROR] Something went wrong -- %s' % dq[1])
+        vim.command("call gdoc#Msg('[gdoc.vim] Something went wrong', 'error')")
 else:
-    print('[INFO] Document "%s" is not synced with google docs yet, try running :Gdoc write ' % target_file_name)
-
+    vim.command("call gdoc#Msg('[gdoc.vim] Document \"%s\" is not synced with google docs yet, try running :Gdoc write', 'error')" % target_file_name)
 EOF 
 endfunction
 
@@ -64,21 +78,22 @@ python3 << EOF
 target_file_name = vim.eval("expand('%:t')")
 target_file_path = vim.eval("expand('%:p')")
 
-print('[INFO] Syncing document...')
+
 if os.path.exists(query.gdoc_file) and query.open_doc_from_file(fname = target_file_path, idx = '') != -1:
+    vim.command("call gdoc#Msg('[gdoc.vim] Syncing document...', 'warn')")
     id = query.open_doc_from_file(fname = target_file_path, idx = '')[1]
 
     with open(target_file_path) as file:
         new_content = file.read()
 
     if query.sync_doc(new_content, id) != -1:
-        print('[INFO] Successfully synced the document.')
+        vim.command("call gdoc#Msg('[gdoc.vim] Successfully synced the document.', 'warn')")
 
     else:
-        print('[ERROR] Something went wrong')
+        vim.command("call gdoc#Msg('[gdoc.vim] Something went wrong', 'error')")
 
 else:
-    print('[INFO] Document "%s" is not synced with google docs yet, try running :Gdoc write ' % target_file_name)
+    vim.command("call gdoc#Msg('[INFO] Document \"%s\" is not synced with google docs yet, try running :Gdoc write', 'error')" % target_file_name)
 EOF 
 
 endfunction
@@ -105,13 +120,14 @@ def main():
     doc = query.create_doc(create_blob)
 
     if doc['id'] != None:
-        print(f"[SUCCESS] Created a document with the id {doc['id']} and title '{doc['title']}'")
+        vim.command("call gdoc#Msg('[gdoc.vim] Created a document with the id \"%s\" and title \"%s\" ', 'warn')" % (doc['id'], doc['title']))
+
 
         query.write_id_to_file(doc['id'], target_file_path)
-        print("[SUCCESS] Saved the document ID to %s" % query.gdoc_file)
+        vim.command("call gdoc#Msg('[gdoc.vim] Saved the document ID to %s', 'warn')" % query.gdoc_file)
         
         if query.edit_doc(doc['id'], edit_blob):
-            print(f"[SUCCESS] Successfully written the document with the id {doc['id']} ")
+            vim.command("call gdoc#Msg('[gdoc.vim] Successfully written the document with the id %s', 'warn')" % doc['id'])
     else:
         return -2
 
@@ -120,12 +136,12 @@ target_file_path = vim.eval("expand('%:p')")
 target_file_name = vim.eval("expand('%:t')")
 
 if os.path.exists(query.gdoc_file) and query.open_doc_from_file(fname = target_file_path, idx = '') != -1:
-        print('[INFO] Document "%s" already exists in google docs.' % target_file_name)
+        vim.command("call gdoc#Msg('[gdoc.vim] Document \"%s\" already exists in google docs.', 'error')" % target_file_name)
 else:
     i = main()
     if i == -1:
-        print('[ERROR] Empty buffer, no text to write.')
+        vim.command("call gdoc#Msg('[gdoc.vim] Empty buffer, no text to write.', 'error')" % target_file_name)
     elif i == -2:
-        print('[ERROR] Something went wrong.')
+        vim.command("call gdoc#Msg('[gdoc.vim] Something went wrong.', 'error')" % target_file_name)
 EOF
 endfunction

@@ -12,6 +12,13 @@ class doc_query(google_api):
         f = open(self.gdoc_file, 'a')
         f.write(f"{file_name} -> {idx}\n")
         f.close()
+
+    def search_file(self, search_query=""):
+        q = "mimeType='application/vnd.google-apps.document' and name contains '%s'" % search_query
+        docs = self.list_doc(q)
+
+        return docs
+        
     
     def delete_line_from_file(self, line_num):
         lines = []
@@ -21,8 +28,6 @@ class doc_query(google_api):
         with open(self.gdoc_file, 'w') as fp:
             # iterate each line
             for number, line in enumerate(lines):
-                # delete line 5 and 8. or pass any Nth line you want to remove
-                # note list index starts from 0
                 if number != line_num:
                     fp.write(line)
         return lines

@@ -10,6 +10,7 @@ from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
+
 class google_api():
     def __init__(self, credentials_file_path, token_directory: str = './'):
         self.SCOPES = [
@@ -47,8 +48,11 @@ class google_api():
                     print('Please provide a valid crednetials file')
                     sys.exit()
 
-            path_exists = os.path.exists(os.path.join(self.token_directory, 'token.pickle'))
-            
+            path_exists = os.path.exists(
+                os.path.join(
+                    self.token_directory,
+                    'token.pickle'))
+
             if path_exists:
                 with open(os.path.join(self.token_directory, 'token.pickle'), 'wb') as token:
                     pickle.dump(self.creds, token)
@@ -58,8 +62,6 @@ class google_api():
 
                 with open(file_path, 'wb') as token:
                     pickle.dump(self.creds, token)
-
-
 
         if self.creds is None:
             print('ERROR : Service credentials unavailable!')
@@ -78,50 +80,31 @@ class google_api():
     def create_doc(self, blob):
         doc = self.docs_service.documents().create(body=blob).execute()
         return {
-                'id': doc.get('documentId', None), 
-                'title': doc.get('title', None)
-            }
+            'id': doc.get('documentId', None),
+            'title': doc.get('title', None)
+        }
 
-    def list_doc(self, get_all=False):
-        result = []
-        if not get_all:
-            file = self.drive_service.files().list().execute()
-            filtered_data = filter(
-                lambda x: x['mimeType'] == 'application/vnd.google-apps.document',
-                file['files'])
-            for item in filtered_data:
-                result.append(item)
-            return result
+    def list_doc(self, params: str):
+        page_token = None
+        res = []
 
-        else:
-            page_token = None
-            data = []
-            while True:
-                try:
-                    param = {}
-                    if page_token:
-                        param['pageToken'] = page_token
-                    files = self.drive_service.files().list(**param).execute()
-                    data.extend(files['files'])
-
-                    page_token = files.get('nextPageToken')
-                    if not page_token:
-                        break
-                except errors.HttpError as error:
-                    print('An error occurred: ', error)
-                    break
-
-        filtered_data = filter(
-            lambda x: x['mimeType'] == 'application/vnd.google-apps.document',
-            file['files'])
-        for item in filtered_data:
-            result.append(item)
-        return result
+        while True:
+            response = self.drive_service.files().list(
+                q=params,
+                fields='nextPageToken, files(id, name)',
+                pageToken=page_token).execute()
+            for file in response.get('files', []):
+                res.append(file)
+            page_token = response.get('nextPageToken', None)
+            if page_token is None:
+                break
+        return res
 
     def read_doc(self, doc_id):
         document = self.docs_service.documents().get(documentId=doc_id).execute()
         return document
 
     def edit_doc(self, doc_id, blob):
-        result = self.docs_service.documents().batchUpdate(documentId=doc_id, body={'requests': blob}).execute()
+        result = self.docs_service.documents().batchUpdate(
+            documentId=doc_id, body={'requests': blob}).execute()
         return result

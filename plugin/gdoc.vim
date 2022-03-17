@@ -18,4 +18,4 @@ function! GdocComplete(ArgLead, CmdLine, CursorPos)
     return ['sync', 'write', 'rm']
 endfunction
 
-command! -nargs=* -complete=customlist,GdocComplete Gdoc call gdoc#LoadCommand(plug_path, path_to_creds, token_directory, gdoc_path, <f-args>)
+command! -nargs=+ -complete=customlist,GdocComplete Gdoc call gdoc#LoadCommand(plug_path, path_to_creds, token_directory, gdoc_path, <q-args>)

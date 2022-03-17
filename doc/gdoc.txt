@@ -1,0 +1,44 @@
+*gdoc.txt* Google docs integration for vim.
+
+                                 ______ ______
+                               _/      Y      \_
+                              // ~~ ~~ | ~~ ~  \\
+                             // ~ ~ ~~ | ~~~ ~~ \\      
+                            //________.|.________\\     
+                           `----------`-'----------'
+
+          Creating, Deleting and syncing google documents from vim. 
+
+====================================================================
+CONTENTS                                            *Gdoc*
+
+    1. Setup ................ |GdocSetup|
+    2. Usage ................ |GdocUsage|
+
+====================================================================
+Section 1: Setup                                       *GdocSetup*
+
+To setup this app, you need to have a google account to create a new google
+cloud project. you can find instructions to setup the app here
+https://github.com/Aadv1k/gdoc.vim/blob/main/README.md#Installation
+
+
+====================================================================
+Section 2: Usage                                       *GdocUsage*
+
+
+The `:Gdoc` command consists of three main function.
+- `:Gdoc write`
+This essentially creates a new google document with the current file name, and
+appends some extra info to `.gdoc` in the local directory which will later be
+used by other functions. It does so using the following scheme
+`{file_name.[extension]} -> {document_id}`
+
+- `:Gdoc Sync`
+This accesses the document associated with that particular filename using
+`.gdoc`, it then formats a request that first clears the entire document, and
+writes your current file contents.
+
+- `:Gdoc rm`
+This deletes the document associated with the file from google drive.
+
