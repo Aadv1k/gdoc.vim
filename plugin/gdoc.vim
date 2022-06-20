@@ -1,5 +1,5 @@
 if !has('python3')
-    echom "[ERROR] Python3 is required for this to work"
+    echoerr "[gdoc.vim] Python3 is required for gdoc.vim to work."
     finish
 endif
 
@@ -10,7 +10,7 @@ let gdoc_path = get(g:, 'gdoc_file_path', "./.gdoc")
 
 
 if path_to_creds == -1
-    echom "[ERROR] Please provde a credential file path"
+    echoerr "[gdoc.vim] Please provde the credentials file."
     finish
 endif
 

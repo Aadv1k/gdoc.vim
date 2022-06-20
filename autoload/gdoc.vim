@@ -10,12 +10,13 @@ function gdoc#LoadCommand(plug_path, path_to_creds, token_directory, gdoc_path, 
     elseif mode  == 'rm'
         call gdoc#RmDoc()
     else
-        echom "Exaustive handling of Arguments; " . mode . " Not found"
+        echoerr "Exaustive handling of Arguments; " . mode . " Not found"
     endif
 endfunction
 
 
 function gdoc#Gdoc(plug_path, path_to_creds, token_directory, gdoc_path)
+""""""""""""""""""""
 python3 << EOF
 import vim
 import sys
@@ -26,22 +27,21 @@ python_root_dir = normpath(join(plugin_root_dir, '..', 'python'))
 sys.path.insert(0, python_root_dir)
 
 from gdoc import doc_query
+from fmt_msg import GdocErr
 
 creds_path = expanduser(vim.eval('a:path_to_creds'))
 token_path = expanduser(vim.eval('a:token_directory'))
 gdoc_path = expanduser(join(vim.eval('a:gdoc_path'), '.gdoc'))
 
 query = doc_query(creds_path, token_path, gdoc_path)
-
 EOF
+""""""""""""""""""""
 endfunction
 
 function gdoc#RmDoc()
 python3 << EOF 
-
 target_file_name = vim.eval("expand('%:t')")
 target_file_path = vim.eval("expand('%:p')")
-
 local_doc = query.open_doc_from_file(target_file_path)
 
 if local_doc != -1:
@@ -54,9 +54,9 @@ if local_doc != -1:
         query.delete_line_from_file(line)
         print('[gdoc.vim] Successfully deleted \"%s\" from google docs' % target_file_name)
     else:
-        print('[gdoc.vim] Something went wrong')
+        raise GdocErr('Something went wrong')
 else:
-    print("[gdoc.vim] Document \"%s\" is not synced with google docs yet, try running :Gdoc write" % target_file_name)
+    raise GdocErr("Document \"%s\" is not synced with google docs yet, try running :Gdoc write" % target_file_name)
 EOF 
 endfunction
 
@@ -79,10 +79,10 @@ if os.path.exists(query.gdoc_file) and query.open_doc_from_file(fname = target_f
         print("[gdoc.vim] Successfully synced the document.")
 
     else:
-        print("[gdoc.vim] Something went wrong")
+        raise GdocErr("Something went wrong")
 
 else:
-    print("[gdoc.vim] Document \"%s\" is not synced with google docs yet, try running :Gdoc write'" % target_file_name)
+    raise GdocErr("Document \"%s\" is not synced with google docs yet, try running :Gdoc write'" % target_file_name)
 EOF 
 
 endfunction
@@ -129,8 +129,8 @@ if os.path.exists(query.gdoc_file) and query.open_doc_from_file(fname = target_f
 else:
     i = main()
     if i == -1:
-        print('[gdoc.vim] Empty buffer, no text to write.')
+        raise GdocErr('[gdoc.vim] Empty buffer, no text to write.')
     elif i == -2:
-        print('[gdoc.vim] Something went wrong.')
+        raise GdocErr('[gdoc.vim] Something went wrong.')
 EOF
 endfunction

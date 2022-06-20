@@ -5,11 +5,11 @@ import os
 import pickle
 import sys
 
-from apiclient import errors
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
+from fmt_msg import GdocErr
 
 class google_api():
     def __init__(self, credentials_file_path, token_directory: str = './'):
@@ -41,12 +41,13 @@ class google_api():
                             self.credential_file, self.SCOPES)
 
                         self.creds = flow.run_local_server(port=0)
+
                     except Exception as _:
-                        print('Please provide a credentials file')
-                        sys.exit()
+                        #gdoc_err('Please provide a valid credentials file')
+                        raise GdocErr('Please provide a valid credentials file')
                 else:
-                    print('Please provide a valid crednetials file')
-                    sys.exit()
+                    #gdoc_err('Please provide a valid credentials file')
+                    raise GdocErr('Please provide a valid credentials file')
 
             path_exists = os.path.exists(
                 os.path.join(
@@ -64,8 +65,7 @@ class google_api():
                     pickle.dump(self.creds, token)
 
         if self.creds is None:
-            print('ERROR : Service credentials unavailable!')
-            sys.exit()
+            raise GdocErr('Service credentials unavailable!')
 
         self.drive_service = build('drive', 'v3', credentials=self.creds)
         self.docs_service = build('docs', 'v1', credentials=self.creds)
