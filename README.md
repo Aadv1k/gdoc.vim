@@ -55,24 +55,24 @@ is used to map local files to their corresponding document in the drive
 ## Usage
 
 > This plugin creates a file called `.gdoc` which is placed in a folder you can specify via `g:gdoc_file_path` by default it is made in every directory you execute `:Gdoc write`.
->
 > `.gdoc` is used to keep track of the local files and their documents(ids). It does so using the following format `{full_file_path} -> {file_id}\n`
 
 ### `:Gdoc write`
 
-This essentially creates a new google document with the current file name, and
-appends some extra info to `.gdoc` in the local directory which will later be
-used by other functions. It does so using the following scheme `{file_name.[extension]} -> {document_id}`
+Creates a new google document with the same filename and contents as your local
+file and saves it in `.gdoc` to be used by other functions
 
-### `:Gdoc sync` (kinda)
+### `:Gdoc sync`
 
-This accesses the document associated with that particular filename using
-`.gdoc`, it then formats a request that first clears the entire document, and
-writes your current file contents in it.
+re-write the content of the google document associated with your local file.
+
+### `:Gdoc sync-doc`
+
+re-write the content of the **local file** with its associated **google document**
 
 ### `:Gdoc rm`
 
-Delete the document associated with the file from google drive.
+Delete the google document associated with the local file from google drive.
 
 ## Screenshots
 

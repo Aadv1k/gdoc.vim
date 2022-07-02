@@ -25,10 +25,13 @@ appends some extra info to `.gdoc` in the local directory which will later be
 used by other functions. It does so using the following scheme
 `{file_name.[extension]} -> {document_id}`
 
-- `:Gdoc Sync`
+- `:Gdoc sync`
 This accesses the document associated with that particular filename using
 `.gdoc`, it then formats a request that first clears the entire document, and
 writes your current file contents.
+
+- `:Gdoc sync-doc`
+This re-writes your local file with content from the google document
 
 - `:Gdoc rm`
 This deletes the document associated with the file from google drive.
