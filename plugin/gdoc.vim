@@ -6,7 +6,7 @@ endif
 let path_to_creds = get(g:, 'path_to_creds', "-1")
 let token_directory = get(g:, 'token_directory', "./")
 let plug_path = fnamemodify(resolve(expand('<sfile>:p')), ':h')
-let gdoc_path = get(g:, 'gdoc_file_path', "./.gdoc")
+let gdoc_path = get(g:, 'gdoc_file_path', "./")
 
 
 if path_to_creds == -1

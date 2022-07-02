@@ -4,7 +4,7 @@ from itertools import chain
 
 class doc_query(google_api):
     def __init__(self, credentials_file_path,
-                 token_directory='./', gdoc_file='./.gdoc'):
+                 token_directory='./', gdoc_file='.gdoc'):
         super().__init__(credentials_file_path, token_directory)
         self.gdoc_file = gdoc_file
 
@@ -76,6 +76,7 @@ class doc_query(google_api):
             return -1
 
         return result
+
 
     def open_doc_from_file(self, fname: str = '', idx: str = ''):
         with open(self.gdoc_file) as file:
