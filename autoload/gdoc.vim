@@ -90,6 +90,7 @@ endfunction
 function gdoc#Sync()
 python3 << EOF 
 
+import os
 
 target_file_name = vim.eval("expand('%:t')")
 target_file_path = vim.eval("expand('%:p')")
