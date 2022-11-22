@@ -62,11 +62,11 @@ is used to map local files to their corresponding document in the drive
 Creates a new google document with the same filename and contents as your local
 file and saves it in `.gdoc` to be used by other functions
 
-### `:Gdoc sync` - `gdoc#Sync()`
+### `:Gdoc upload` - `gdoc#UploadDoc()`
 
 re-write the content of the google document associated with your local file.
 
-### `:Gdoc sync-doc` - `gdoc#SyncDoc()`
+### `:Gdoc download` - `gdoc#DownloadDoc()`
 
 re-write the content of the **local file** with its associated **google document**
 
