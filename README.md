@@ -21,6 +21,8 @@ Google docs integration for vim/neovim.
 
 ```vim
 Plug 'aadv1k/gdoc.vim', {'do': './install.py'}
+" For the dev version  
+Plug 'aadv1k/gdoc.vim', {'do': './install.py'}, {'branch': 'dev'}
 ```
 
 ### Initializing the app
