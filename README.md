@@ -4,28 +4,36 @@ Google docs integration for vim/neovim.
 
 ## Features
 
-- Create google documents from vim
-- Sync the documents with local changes
-- Delete documents on the drive
-- See [TODO.md](./TODO.md) for more future plans for the project; feel free to raise any issue for a feature or bug.
+- Sync a local file to google docs
+- Delete the google doc from google drive
+- Download the contents of the document to your local file
+- Upload the contents of your local file to it's google doc
 
 ## Installation
 
 **Make sure you have the following**
 
 - python >= 3.6 (including pip)
-- vim 8+ with +python or +python3
-- **for neovim users** pynvim `pip install pynvim`
+- vim 8+ with python3+
+- _for neovim users_ pynvim (`pip install pynvim`)
 
 ### vim-plug
 
 ```vim
 Plug 'aadv1k/gdoc.vim', {'do': './install.py'}
-" For the dev version  
-Plug 'aadv1k/gdoc.vim', {'do': './install.py'}, {'branch': 'dev'}
+" For the dev branch
+Plug 'aadv1k/gdoc.vim', {'do': './install.py', 'branch': 'dev'}
 ```
 
-### Initializing the app
+### packer.nvim
+
+```lua
+use {'aadv1k/gdoc.vim', run = './install.py'}
+-- For the dev branch
+use {'aadv1k/gdoc.vim', run = './install.py', branch = 'dev'}
+```
+
+## Initializing the app
 
 For this to work, you need to have a google account, then you need to create a new google cloud project.
 [Creating a google cloud project](https://developers.google.com/workspace/guides/create-project)
@@ -47,35 +55,21 @@ let g:token_directory = '~/.vim/' " optional; default is ./
 
 These paths will be valid both on windows and unix as they are passed through [`os.path.expanduser()`](https://docs.python.org/3/library/os.path.html#os.path.expanduser) in python.
 
-`g:token_directory` is where token for your api should live, if you don't
-want the oAuth screen to pop-up everytime, you should set a standard directory
-to place the token.
+- `g:token_directory` is where token for your api should live, if you don't
+  want the oAuth screen to pop-up everytime, you should set a standard directory
+  to place the token.
 
-`g:gdoc_file_path` is the directory where the `.gdoc` file is placed, this file
-is used to map local files to their corresponding document in the drive
+- `g:gdoc_file_path` is the directory where the `.gdoc` file is placed, this file
+  is used to map local files to their corresponding document in the drive
 
 ## Usage
 
 > This plugin creates a file called `.gdoc` which is placed in a folder you can specify via `g:gdoc_file_path` by default it is made in every directory you execute `:Gdoc write`.
 > `.gdoc` is used to keep track of the local files and their documents(ids). It does so using the following format `{full_file_path} -> {file_id}\n`
 
-### `:Gdoc write` - `gdoc#WriteDoc()`
-
-Creates a new google document with the same filename and contents as your local
-file and saves it in `.gdoc` to be used by other functions
-
-### `:Gdoc sync` - `gdoc#Sync()`
-
-re-write the content of the google document associated with your local file.
-
-### `:Gdoc sync-doc` - `gdoc#SyncDoc()`
-
-re-write the content of the **local file** with its associated **google document**
-
-### `:Gdoc rm` - `gdoc#RmDoc()`
-
-Delete the google document associated with the local file from google drive.
-
-## Screenshots
-
-<img src="./screenshots/1.1.png" alt="1.png" width="500px">
+| Command          | Function          | Description                                                                  |
+| ---------------- | ----------------- | ---------------------------------------------------------------------------- |
+| `:Gdoc write`    | `gdoc#WriteDoc()` | Write your current file to a google doc with the same name                   |
+| `:Gdoc sync`     | `gdoc#Sync()`     | Upload the changes in your local file to google doc                          |
+| `:Gdoc sync-doc` | `gdoc#SyncDoc()`  | Download the changes in google doc to local file                             |
+| `:Gdoc rm`       | `gdoc#RmDoc()`    | Delete the google document associated with the local file from google drive. |
