@@ -15,7 +15,7 @@ if path_to_creds == -1
 endif
 
 function! GdocComplete(ArgLead, CmdLine, CursorPos)
-    return ['sync', 'sync-doc', 'write', 'rm']
+    return ['download', 'upload', 'write', 'rm']
 endfunction
 
 command! -nargs=+ -complete=customlist,GdocComplete Gdoc call gdoc#LoadCommand(plug_path, path_to_creds, token_directory, gdoc_path, <q-args>)

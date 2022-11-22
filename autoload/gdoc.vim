@@ -5,10 +5,10 @@ function gdoc#LoadCommand(plug_path, path_to_creds, token_directory, gdoc_path, 
 
     if mode  == 'write'
         call gdoc#WriteDoc()
-    elseif mode  == 'sync'
-        call gdoc#Sync()
-    elseif mode  == 'sync-doc'
-        call gdoc#SyncDoc()
+    elseif mode  == 'upload'
+        call gdoc#UploadDoc()
+    elseif mode  == 'download'
+        call gdoc#DownloadDoc()
     elseif mode  == 'rm'
         call gdoc#RmDoc()
     else
@@ -62,7 +62,7 @@ else:
 EOF 
 endfunction
 
-function gdoc#SyncDoc()
+function gdoc#DownloadDoc()
 python3 << EOF 
 
 
@@ -78,16 +78,14 @@ if document != -1:
     with open(local_file, 'w') as file:
     	file.write(remote_doc_content)
 
-    print('[gdoc.vim] Successfully synced remote doc to local file')
+    print('[gdoc.vim] Downloaded remote doc')
 else:
     raise GdocErr("Document \"%s\" is not synced with google docs yet, try running :Gdoc write" % target_file_name)
 EOF 
-
 :edit!
 endfunction 
 
-
-function gdoc#Sync()
+function gdoc#UploadDoc()
 python3 << EOF 
 
 import os
@@ -104,11 +102,10 @@ if os.path.exists(query.gdoc_file) and query.open_doc_from_file(fname = target_f
         new_content = file.read()
 
     if query.sync_doc(new_content, id) != -1:
-        print("[gdoc.vim] Successfully synced the local file to remote doc")
+        print("[gdoc.vim] Successfully uploaded to the remote doc")
 
     else:
         raise GdocErr("Something went wrong")
-
 else:
     raise GdocErr("Document \"%s\" is not synced with google docs yet, try running :Gdoc write'" % target_file_name)
 EOF 
