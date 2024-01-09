@@ -1,3 +1,9 @@
+
+
+let g:path_to_creds = '~/.vim/credentials.json' " this is required
+let g:gdoc_file_path = '~/.vim/' " optional; default is ./
+let g:token_directory = '~/.vim/' " optional; default is ./
+
 if !has('python3')
     echoerr "[gdoc.vim] Python3 is required for gdoc.vim to work."
     finish
@@ -15,7 +21,7 @@ if path_to_creds == -1
 endif
 
 function! GdocComplete(ArgLead, CmdLine, CursorPos)
-    return ['sync', 'sync-doc', 'write', 'rm']
+    return ['sync', 'sync-doc', 'write', 'rm', 'fetch-doc']
 endfunction
 
 command! -nargs=+ -complete=customlist,GdocComplete Gdoc call gdoc#LoadCommand(plug_path, path_to_creds, token_directory, gdoc_path, <q-args>)

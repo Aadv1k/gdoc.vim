@@ -11,6 +11,12 @@ function gdoc#LoadCommand(plug_path, path_to_creds, token_directory, gdoc_path, 
         call gdoc#SyncDoc()
     elseif mode  == 'rm'
         call gdoc#RmDoc()
+    elseif mode == 'fetch-doc'
+        if len(args) <= 1
+            echoerr "gdoc.vim: fetch-doc expects a document id"
+        else
+            call gdoc#FetchDoc(args[1])
+        endif
     else
         echoerr "Exaustive handling of Arguments; " . mode . " Not found"
     endif
@@ -162,3 +168,29 @@ else:
         raise GdocErr('[gdoc.vim] Something went wrong.')
 EOF
 endfunction
+
+
+function gdoc#FetchDoc(doc_id)
+python3 << EOF 
+
+try:
+    content = query.read_doc(document_id)
+except:
+    raise GdocErr(f"Was unable to read document of id '{document_id}' perhaps its invalid?")
+    
+extracted_text = query.parse_doc(content)[0]
+lines = extracted_text.split('\n')
+
+for line_number, line_content in enumerate(lines):
+    vim.command(f"call setline({line_number + 1}, '{line_content}')")
+
+vim.command("write!")
+
+target_file_path = vim.eval("expand('%:p')")
+
+query.write_id_to_file(document_id, target_file_path)
+
+print(f"gdoc.vim: local association created for {document_id}")
+EOF
+endfunction
+

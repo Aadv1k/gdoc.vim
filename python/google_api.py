@@ -104,6 +104,20 @@ class google_api():
         document = self.docs_service.documents().get(documentId=doc_id).execute()
         return document
 
+    def extract_text_from_gdoc_data(self, data):
+        text_content = ""
+
+        if 'body' in json_data and 'content' in json_data['body']:
+            for item in json_data['body']['content']:
+                if 'paragraph' in item and 'elements' in item['paragraph']:
+                    for element in item['paragraph']['elements']:
+                        if 'textRun' in element and 'content' in element['textRun']:
+                            text_content += element['textRun']['content']
+        return text_content
+
+
+
+
     def edit_doc(self, doc_id, blob):
         result = self.docs_service.documents().batchUpdate(
             documentId=doc_id, body={'requests': blob}).execute()
