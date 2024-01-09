@@ -8,6 +8,7 @@ Google docs integration for vim/neovim.
 - Delete the google doc from google drive
 - Download the contents of the document to your local file
 - Upload the contents of your local file to it's google doc
+- Fetch remote document by their IDs and save them locally
 
 ## Installation
 
@@ -69,6 +70,7 @@ These paths will be valid both on windows and unix as they are passed through [`
 
 | Command          | Function          | Description                                                                  |
 | ---------------- | ----------------- | ---------------------------------------------------------------------------- |
+| `:Gdoc fetch-doc <id>`    | `gdoc#FetchDoc(doc_id)` | Tries to find a document with the specified id, if found then saves it to the current buffer and adds an entry to `.gdoc`                  |
 | `:Gdoc write`    | `gdoc#WriteDoc()` | Write your current file to a google doc with the same name                   |
 | `:Gdoc sync`     | `gdoc#Sync()`     | Upload the changes in your local file to google doc                          |
 | `:Gdoc sync-doc` | `gdoc#SyncDoc()`  | Download the changes in google doc to local file                             |
