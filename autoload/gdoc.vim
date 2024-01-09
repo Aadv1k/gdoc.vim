@@ -173,6 +173,8 @@ endfunction
 function gdoc#FetchDoc(doc_id)
 python3 << EOF 
 
+document_id = vim.eval("a:doc_id")
+
 try:
     content = query.read_doc(document_id)
 except:
@@ -191,6 +193,6 @@ target_file_path = vim.eval("expand('%:p')")
 query.write_id_to_file(document_id, target_file_path)
 
 print(f"gdoc.vim: local association created for {document_id}")
-EOF
+EOF 
 endfunction
 
