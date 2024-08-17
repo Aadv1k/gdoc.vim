@@ -1,5 +1,3 @@
-
-
 let g:path_to_creds = '~/.vim/credentials.json' " this is required
 let g:gdoc_file_path = '~/.vim/' " optional; default is ./
 let g:token_directory = '~/.vim/' " optional; default is ./
