@@ -171,7 +171,7 @@ endfunction
 
 
 function gdoc#FetchDoc(doc_id)
-python3 << EOF
+python3 <<EOF
 
 document_id = vim.eval("a:doc_id")
 
