@@ -54,6 +54,8 @@ let g:gdoc_file_path = '/some-directory'                      " Defaults to '~/.
 let g:token_directory = '/some-directory'                     " Defaults to '~/.vim/'
 ```
 
+[NOTE]: Directories specified must exist - they will not be created by this plugin.
+
 These paths will be valid both on windows and unix as they are passed through [`os.path.expanduser()`](https://docs.python.org/3/library/os.path.html#os.path.expanduser) in python.
 
 - `g:token_directory` is where token for your api should live, if you don't
