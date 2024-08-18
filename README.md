@@ -49,10 +49,12 @@ the credentials in the `g:path_to_creds`.
 In the example below, `credentials.json` is placed in `~/.vim` you can use any valid credential file, and put it's path here.
 
 ```vim
-let g:path_to_creds = '~/.vim/credentials.json' " this is required
-let g:gdoc_file_path = '~/.vim/' " optional; default is ./
-let g:token_directory = '~/.vim/' " optional; default is ./
+let g:path_to_creds = '/some-path/some-credentials-file.json' " Defaults to '~/.vim/credentials.json'
+let g:gdoc_file_path = '/some-directory'                      " Defaults to '~/.vim/'
+let g:token_directory = '/some-directory'                     " Defaults to '~/.vim/'
 ```
+
+[NOTE]: Directories specified must exist - they will not be created by this plugin.
 
 These paths will be valid both on windows and unix as they are passed through [`os.path.expanduser()`](https://docs.python.org/3/library/os.path.html#os.path.expanduser) in python.
 

@@ -47,7 +47,7 @@ EOF
 endfunction
 
 function gdoc#RmDoc()
-python3 << EOF 
+python3 << EOF
 target_file_name = vim.eval("expand('%:t')")
 target_file_path = vim.eval("expand('%:p')")
 local_doc = query.open_doc_from_file(target_file_path)
@@ -65,11 +65,11 @@ if local_doc != -1:
         raise GdocErr('Something went wrong')
 else:
     raise GdocErr("Document \"%s\" is not synced with google docs yet, try running :Gdoc write" % target_file_name)
-EOF 
+EOF
 endfunction
 
 function gdoc#SyncDoc()
-python3 << EOF 
+python3 << EOF
 
 
 target_file_name = vim.eval("expand('%:t')")
@@ -87,14 +87,14 @@ if document != -1:
     print('[gdoc.vim] Successfully synced remote doc to local file')
 else:
     raise GdocErr("Document \"%s\" is not synced with google docs yet, try running :Gdoc write" % target_file_name)
-EOF 
+EOF
 
 :edit!
-endfunction 
+endfunction
 
 
 function gdoc#Sync()
-python3 << EOF 
+python3 << EOF
 
 import os
 
@@ -117,7 +117,7 @@ if os.path.exists(query.gdoc_file) and query.open_doc_from_file(fname = target_f
 
 else:
     raise GdocErr("Document \"%s\" is not synced with google docs yet, try running :Gdoc write'" % target_file_name)
-EOF 
+EOF
 
 endfunction
 
@@ -148,7 +148,7 @@ def main():
 
         query.write_id_to_file(doc['id'], target_file_path)
         print("[gdoc.vim] Saved the document ID to %s" % query.gdoc_file)
-        
+
         if query.edit_doc(doc['id'], edit_blob):
             print("[gdoc.vim] Successfully written the document with the id %s"  % doc['id'])
     else:
@@ -171,7 +171,7 @@ endfunction
 
 
 function gdoc#FetchDoc(doc_id)
-python3 << EOF 
+python3 <<EOF
 
 document_id = vim.eval("a:doc_id")
 
@@ -179,7 +179,7 @@ try:
     content = query.read_doc(document_id)
 except:
     raise GdocErr(f"Was unable to read document of id '{document_id}' perhaps its invalid?")
-    
+
 extracted_text = query.parse_doc(content)[0]
 lines = extracted_text.split('\n')
 
@@ -193,6 +193,5 @@ target_file_path = vim.eval("expand('%:p')")
 query.write_id_to_file(document_id, target_file_path)
 
 print(f"gdoc.vim: local association created for {document_id}")
-EOF 
+EOF
 endfunction
-
