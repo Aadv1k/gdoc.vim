@@ -8,6 +8,8 @@ import sys
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
+import httplib2
+from google_auth_httplib2 import AuthorizedHttp
 
 from fmt_msg import GdocErr
 
@@ -67,8 +69,12 @@ class google_api():
         if self.creds is None:
             raise GdocErr('Service credentials unavailable!')
 
-        self.drive_service = build('drive', 'v3', credentials=self.creds)
-        self.docs_service = build('docs', 'v1', credentials=self.creds)
+        # Use httplib2 with extended timeout (60 seconds) to avoid timeout issues in Neovim
+        http = httplib2.Http(timeout=60)
+        authorized_http = AuthorizedHttp(self.creds, http=http)
+
+        self.drive_service = build('drive', 'v3', http=authorized_http)
+        self.docs_service = build('docs', 'v1', http=authorized_http)
 
     def delete_doc(self, file_id):
         try:
